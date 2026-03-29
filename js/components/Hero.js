@@ -3,12 +3,6 @@ export function Hero() {
     <section id="inicio" class="mx-auto max-w-6xl px-6 py-16 lg:py-28">
       <div class="grid items-center gap-12 md:grid-cols-2">
         <div class="space-y-6">
-          <p
-            class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/50 px-4 py-1.5 text-xs font-bold text-blue-700 dark:border-blue-900/30 dark:bg-blue-900/20 dark:text-blue-400"
-          >
-            <span class="flex h-2 w-2 rounded-full bg-blue-500"></span>
-            En formación • Web Dev
-          </p>
           <h1
             class="text-4xl font-extrabold tracking-tight md:text-6xl leading-tight"
           >
@@ -62,21 +56,6 @@ export function Hero() {
           <div
             class="relative rounded-[2rem] border border-slate-200 bg-white p-8 shadow-2xl dark:border-slate-800 dark:bg-slate-900 transition-transform duration-500"
           >
-            <div class="flex items-start justify-between">
-              <div>
-                <p
-                  class="text-[10px] font-bold uppercase tracking-widest text-slate-400"
-                >
-                  Estado actual
-                </p>
-                <p class="mt-1 text-sm font-bold">Disponible para colaborar</p>
-              </div>
-              <span
-                class="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 uppercase"
-              >
-                En línea
-              </span>
-            </div>
 
             <div class="mt-8 space-y-6">
               <div
@@ -90,35 +69,9 @@ export function Hero() {
                 <p class="text-sm font-medium leading-relaxed">
                   Tecnico Medio en Sistemas Informaticos <br />
                   Estudiante de Ingeniería de Sistemas (9no Semestre) con
-                  mención en Informática y Telecomunicaciones.
+                  mención en Informática y Telecomunicaciones, Autodidacta en desarrollo de Aplicaciones Web 
+                  .
                 </p>
-              </div>
-
-              <div class="grid grid-cols-2 gap-4">
-                <div
-                  class="rounded-2xl bg-slate-50 p-5 dark:bg-slate-950 border border-slate-100 dark:border-slate-800"
-                >
-                  <p
-                    class="text-[10px] font-bold uppercase tracking-widest text-slate-400"
-                  >
-                    Objetivo
-                  </p>
-                  <p class="mt-2 text-xs font-bold leading-tight">
-                    Colaborar con diferentes empresas.
-                  </p>
-                </div>
-                <div
-                  class="rounded-2xl bg-slate-50 p-5 dark:bg-slate-950 border border-slate-100 dark:border-slate-800"
-                >
-                  <p
-                    class="text-[10px] font-bold uppercase tracking-widest text-slate-400"
-                  >
-                    Ubicación
-                  </p>
-                  <p class="mt-2 text-xs font-bold leading-tight">
-                    La Paz, Bolivia
-                  </p>
-                </div>
               </div>
 
               <div>
