@@ -8,7 +8,7 @@ import { Footer } from './components/Footer.js';
 
 const app = document.getElementById('app');
 
-// 1. Inyectamos los componentes
+// 1. Inyectamos los componentes responsivos
 app.innerHTML = `
   ${Header()}
   <main>
@@ -21,15 +21,16 @@ app.innerHTML = `
   ${Footer()}
 `;
 
-// 2. Inicializamos eventos e interacciones de UI
+// 2. Inicializamos eventos de interfaz y animaciones GSAP
 inicializarUI();
+inicializarGSAP();
 
 function inicializarUI() {
   // Actualizar año en footer
   const yearElement = document.getElementById('year');
   if (yearElement) yearElement.textContent = new Date().getFullYear();
 
-  // Menú Móvil
+  // Menú Móvil Responsivo
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   const mobileLinks = mobileMenu?.querySelectorAll('a');
@@ -56,17 +57,17 @@ function inicializarUI() {
     });
   }
 
-  // Dark Mode Persistence
+  // MODO OSCURO POR DEFECTO Y PERSISTENCIA DE TEMA
   const themeBtn = document.getElementById('themeBtn'); 
   const htmlElement = document.documentElement;
 
-  const isDarkMode = localStorage.getItem('theme') === 'dark' || 
-                    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  
-  if (isDarkMode) {
-    htmlElement.classList.add('dark');
-  } else {
+  // Si el usuario no ha elegido explícitamente 'light', por defecto es 'dark'
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
     htmlElement.classList.remove('dark');
+  } else {
+    htmlElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
   }
 
   const toggleTheme = () => {
@@ -86,6 +87,15 @@ function inicializarUI() {
     openMoreProjectsBtn.addEventListener('click', () => {
       moreProjectsModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+
+      // Animación GSAP al abrir el modal
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(
+          moreProjectsModal.querySelector('> div'),
+          { y: 40, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.2)' }
+        );
+      }
     });
   }
 
@@ -129,7 +139,54 @@ function inicializarUI() {
   }
 }
 
-// Toast Helper
+// INTEGRA GSAP & SCROLLTRIGGER PARA ANIMACIONES ESPECTACULARES
+function inicializarGSAP() {
+  if (typeof gsap === 'undefined') return;
+
+  // Registrar ScrollTrigger si está disponible
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // 1. Animación de entrada de la sección Hero
+  const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
+
+  heroTimeline
+    .from('#inicio h1', { y: 40, opacity: 0, delay: 0.1 })
+    .from('#inicio p', { y: 30, opacity: 0 }, '-=0.5')
+    .from('#inicio .flex-wrap span', { y: 20, opacity: 0, stagger: 0.08 }, '-=0.4')
+    .from('#inicio a', { scale: 0.9, opacity: 0, stagger: 0.1 }, '-=0.3')
+    .from('#inicio .glass-card', { y: 30, opacity: 0 }, '-=0.3');
+
+  // 2. Animaciones de revelado por ScrollTrigger para las secciones
+  const secciones = ['#sobre-mi', '#habilidades', '#proyectos', '#contacto'];
+
+  secciones.forEach((secId) => {
+    const el = document.querySelector(secId);
+    if (!el) return;
+
+    const cards = el.querySelectorAll('.glass-card, article');
+
+    gsap.fromTo(
+      cards,
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: secId,
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+}
+
+// Toast Notification Helper
 function showToast(message) {
   const toast = document.getElementById('toast');
   const toastMsg = document.getElementById('toastMsg');
