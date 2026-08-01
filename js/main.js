@@ -26,6 +26,9 @@ inicializarUI();
 inicializarGSAP();
 
 function inicializarUI() {
+  // Garantizar modo oscuro permanente en HTML
+  document.documentElement.classList.add('dark');
+
   // Actualizar año en footer
   const yearElement = document.getElementById('year');
   if (yearElement) yearElement.textContent = new Date().getFullYear();
@@ -56,27 +59,6 @@ function inicializarUI() {
       });
     });
   }
-
-  // MODO OSCURO POR DEFECTO Y PERSISTENCIA DE TEMA
-  const themeBtn = document.getElementById('themeBtn'); 
-  const htmlElement = document.documentElement;
-
-  // Si el usuario no ha elegido explícitamente 'light', por defecto es 'dark'
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    htmlElement.classList.remove('dark');
-  } else {
-    htmlElement.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  }
-
-  const toggleTheme = () => {
-    const isDarkNow = htmlElement.classList.toggle('dark');
-    localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
-    showToast(isDarkNow ? 'Modo Oscuro Activado 🌙' : 'Modo Claro Activado ☀️');
-  };
-
-  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
   // Modal de "Ver más proyectos"
   const openMoreProjectsBtn = document.getElementById('openMoreProjectsBtn');
@@ -139,7 +121,7 @@ function inicializarUI() {
   }
 }
 
-// INTEGRA GSAP & SCROLLTRIGGER PARA ANIMACIONES ESPECTACULARES
+// INTEGRA GSAP & SCROLLTRIGGER ROBUSTO (CORRIGIENDO BUG DE DESAPARICIÓN DE BADGES)
 function inicializarGSAP() {
   if (typeof gsap === 'undefined') return;
 
@@ -148,15 +130,15 @@ function inicializarGSAP() {
     gsap.registerPlugin(ScrollTrigger);
   }
 
-  // 1. Animación de entrada de la sección Hero
+  // 1. Animación de entrada de la sección Hero con clearProps para evitar desaparición de elementos
   const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
 
   heroTimeline
-    .from('#inicio h1', { y: 40, opacity: 0, delay: 0.1 })
-    .from('#inicio p', { y: 30, opacity: 0 }, '-=0.5')
-    .from('#inicio .flex-wrap span', { y: 20, opacity: 0, stagger: 0.08 }, '-=0.4')
-    .from('#inicio a', { scale: 0.9, opacity: 0, stagger: 0.1 }, '-=0.3')
-    .from('#inicio .glass-card', { y: 30, opacity: 0 }, '-=0.3');
+    .fromTo('#inicio h1', { y: 40, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' })
+    .fromTo('#inicio p', { y: 30, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' }, '-=0.5')
+    .fromTo('.hero-tech-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, clearProps: 'transform,opacity' }, '-=0.4')
+    .fromTo('#inicio a', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, stagger: 0.1, clearProps: 'transform,opacity' }, '-=0.3')
+    .fromTo('#inicio .glass-card', { y: 30, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' }, '-=0.3');
 
   // 2. Animaciones de revelado por ScrollTrigger para las secciones
   const secciones = ['#sobre-mi', '#habilidades', '#proyectos', '#contacto'];
@@ -176,9 +158,10 @@ function inicializarGSAP() {
         duration: 0.7,
         stagger: 0.15,
         ease: 'power2.out',
+        clearProps: 'transform,opacity',
         scrollTrigger: {
           trigger: secId,
-          start: 'top 80%',
+          start: 'top 85%',
           toggleActions: 'play none none none'
         }
       }
