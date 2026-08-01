@@ -3,31 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portafolio</title>
+    <title>Joel Pinto | Ingeniero de Sistemas & Desarrollador Web Fullstack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="config.js"></script>
     <meta
       name="description"
-      content="Portafolio personal: proyectos, habilidades y contacto."
+      content="Portafolio profesional de Joel Freddy Pinto Cutili - Desarrollador Web Fullstack especializado en Laravel, Vue.js, JavaScript, IA y bases de datos."
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-      }
-    </style>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body
-    class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300"
+    class="bg-ambient-light dark:bg-ambient-dark text-slate-900 dark:text-slate-100 transition-colors duration-500 min-h-screen relative antialiased selection:bg-indigo-500 selection:text-white"
   >
     <div id="app"></div>
 
+    <!-- Toast Notification Container -->
+    <div id="toast" class="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-slate-700/50 dark:border-slate-200/50">
+      <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-lg" id="toastIcon"></i>
+      <span id="toastMsg" class="text-sm font-semibold">Notificación</span>
+    </div>
+
     <script type="module" src="js/main.js"></script>
-    
-    <script src="script.js"></script>
   </body>
 </html>
