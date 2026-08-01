@@ -27,7 +27,7 @@ export function Hero() {
         <!-- Tech Stack Badges (WITH ICONS RESTORED HERE) -->
         <div class="flex flex-wrap items-center justify-center gap-2.5 pt-2">
           <span class="px-3.5 py-2 rounded-xl glass-card text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 border border-slate-300 dark:border-slate-800 shadow-sm">
-            <i class="fa-brands fa-laravel text-red-500 text-sm"></i> Laravel 12
+            <i class="fa-brands fa-laravel text-red-500 text-sm"></i> Laravel
           </span>
           <span class="px-3.5 py-2 rounded-xl glass-card text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 border border-slate-300 dark:border-slate-800 shadow-sm">
             <i class="fa-brands fa-vuejs text-emerald-500 text-sm"></i> Vue.js
