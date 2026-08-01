@@ -58,7 +58,6 @@ function inicializarUI() {
 
   // Dark Mode Persistence
   const themeBtn = document.getElementById('themeBtn'); 
-  const themeBtnMobile = document.getElementById('themeBtnMobile'); 
   const htmlElement = document.documentElement;
 
   const isDarkMode = localStorage.getItem('theme') === 'dark' || 
@@ -77,37 +76,34 @@ function inicializarUI() {
   };
 
   if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-  if (themeBtnMobile) themeBtnMobile.addEventListener('click', toggleTheme);
 
-  // Filtrado de Proyectos
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
+  // Modal de "Ver más proyectos"
+  const openMoreProjectsBtn = document.getElementById('openMoreProjectsBtn');
+  const closeMoreProjectsBtn = document.getElementById('closeMoreProjectsBtn');
+  const moreProjectsModal = document.getElementById('moreProjectsModal');
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
-        b.classList.remove('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-500/20');
-        b.classList.add('glass-panel', 'text-slate-700', 'dark:text-slate-300');
-      });
-      btn.classList.remove('glass-panel', 'text-slate-700', 'dark:text-slate-300');
-      btn.classList.add('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-500/20');
-
-      const filter = btn.getAttribute('data-filter');
-
-      projectCards.forEach(card => {
-        if (filter === 'all') {
-          card.style.display = 'flex';
-        } else {
-          const categories = card.getAttribute('data-category')?.split(' ') || [];
-          if (categories.includes(filter)) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        }
-      });
+  if (openMoreProjectsBtn && moreProjectsModal) {
+    openMoreProjectsBtn.addEventListener('click', () => {
+      moreProjectsModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
     });
-  });
+  }
+
+  if (closeMoreProjectsBtn && moreProjectsModal) {
+    closeMoreProjectsBtn.addEventListener('click', () => {
+      moreProjectsModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (moreProjectsModal) {
+    moreProjectsModal.addEventListener('click', (e) => {
+      if (e.target === moreProjectsModal) {
+        moreProjectsModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  }
 
   // Copiar Email al Portapapeles
   const copyEmailBtn = document.getElementById('copyEmailBtn');
