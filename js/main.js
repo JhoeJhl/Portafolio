@@ -21,7 +21,7 @@ app.innerHTML = `
   ${Footer()}
 `;
 
-// 2. Inicializamos eventos de interfaz y animaciones GSAP
+// 2. Inicializamos eventos de interfaz y animaciones GSAP avanzadas
 inicializarUI();
 inicializarGSAP();
 
@@ -74,8 +74,14 @@ function inicializarUI() {
       if (typeof gsap !== 'undefined') {
         gsap.fromTo(
           moreProjectsModal.querySelector('> div'),
-          { y: 40, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.2)' }
+          { y: 50, opacity: 0, scale: 0.92 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.4)' }
+        );
+        const modalCards = moreProjectsModal.querySelectorAll('.project-card');
+        gsap.fromTo(
+          modalCards,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: 'power2.out', delay: 0.1 }
         );
       }
     });
@@ -83,16 +89,44 @@ function inicializarUI() {
 
   if (closeMoreProjectsBtn && moreProjectsModal) {
     closeMoreProjectsBtn.addEventListener('click', () => {
-      moreProjectsModal.classList.add('hidden');
-      document.body.style.overflow = '';
+      if (typeof gsap !== 'undefined') {
+        gsap.to(moreProjectsModal.querySelector('> div'), {
+          y: 30,
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.25,
+          ease: 'power2.in',
+          onComplete: () => {
+            moreProjectsModal.classList.add('hidden');
+            document.body.style.overflow = '';
+          }
+        });
+      } else {
+        moreProjectsModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
     });
   }
 
   if (moreProjectsModal) {
     moreProjectsModal.addEventListener('click', (e) => {
       if (e.target === moreProjectsModal) {
-        moreProjectsModal.classList.add('hidden');
-        document.body.style.overflow = '';
+        if (typeof gsap !== 'undefined') {
+          gsap.to(moreProjectsModal.querySelector('> div'), {
+            y: 30,
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.25,
+            ease: 'power2.in',
+            onComplete: () => {
+              moreProjectsModal.classList.add('hidden');
+              document.body.style.overflow = '';
+            }
+          });
+        } else {
+          moreProjectsModal.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
       }
     });
   }
@@ -121,7 +155,7 @@ function inicializarUI() {
   }
 }
 
-// INTEGRA GSAP & SCROLLTRIGGER ROBUSTO (CORRIGIENDO BUG DE DESAPARICIÓN DE BADGES)
+// SISTEMA GSAP & SCROLLTRIGGER AVANZADO Y FLUIDO PARA CADA SECCIÓN
 function inicializarGSAP() {
   if (typeof gsap === 'undefined') return;
 
@@ -130,43 +164,190 @@ function inicializarGSAP() {
     gsap.registerPlugin(ScrollTrigger);
   }
 
-  // 1. Animación de entrada de la sección Hero con clearProps para evitar desaparición de elementos
+  // 1. Animación del Header (Navbar)
+  gsap.from('header', {
+    y: -50,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power3.out'
+  });
+
+  // 2. Animaciones de la Sección HERO (#inicio)
   const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
 
   heroTimeline
     .fromTo('#inicio h1', { y: 40, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' })
-    .fromTo('#inicio p', { y: 30, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' }, '-=0.5')
-    .fromTo('.hero-tech-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, clearProps: 'transform,opacity' }, '-=0.4')
+    .fromTo('#inicio p:first-of-type', { y: 30, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' }, '-=0.5')
+    .fromTo('.hero-tech-badge', { y: 20, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, stagger: 0.08, clearProps: 'transform,opacity' }, '-=0.4')
     .fromTo('#inicio a', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, stagger: 0.1, clearProps: 'transform,opacity' }, '-=0.3')
-    .fromTo('#inicio .glass-card', { y: 30, opacity: 0 }, { y: 0, opacity: 1, clearProps: 'transform,opacity' }, '-=0.3');
+    .fromTo('#inicio .glass-card', { y: 30, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, clearProps: 'transform,opacity' }, '-=0.3');
 
-  // 2. Animaciones de revelado por ScrollTrigger para las secciones
-  const secciones = ['#sobre-mi', '#habilidades', '#proyectos', '#contacto'];
-
-  secciones.forEach((secId) => {
-    const el = document.querySelector(secId);
-    if (!el) return;
-
-    const cards = el.querySelectorAll('.glass-card, article');
+  // 3. Animación de la Sección SOBRE MÍ (#sobre-mi)
+  const sobreMiEl = document.querySelector('#sobre-mi');
+  if (sobreMiEl) {
+    const title = sobreMiEl.querySelector('h2');
+    const cards = sobreMiEl.querySelectorAll('.glass-card');
 
     gsap.fromTo(
-      cards,
-      { y: 50, opacity: 0 },
+      title,
+      { y: 30, opacity: 0 },
       {
         y: 0,
         opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: '#sobre-mi',
+          start: 'top 85%'
+        }
+      }
+    );
+
+    gsap.fromTo(
+      cards,
+      { y: 40, opacity: 0, scale: 0.96 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
         duration: 0.7,
         stagger: 0.15,
         ease: 'power2.out',
         clearProps: 'transform,opacity',
         scrollTrigger: {
-          trigger: secId,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
+          trigger: '#sobre-mi',
+          start: 'top 80%'
         }
       }
     );
-  });
+  }
+
+  // 4. Animación de la Sección HABILIDADES (#habilidades)
+  const habilidadesEl = document.querySelector('#habilidades');
+  if (habilidadesEl) {
+    const title = habilidadesEl.querySelector('h2');
+    const skillCards = habilidadesEl.querySelectorAll('.glass-card');
+
+    gsap.fromTo(
+      title,
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: '#habilidades',
+          start: 'top 85%'
+        }
+      }
+    );
+
+    gsap.fromTo(
+      skillCards,
+      { y: 45, opacity: 0, scale: 0.95 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'back.out(1.2)',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: '#habilidades',
+          start: 'top 80%'
+        }
+      }
+    );
+  }
+
+  // 5. Animación de la Sección PROYECTOS (#proyectos)
+  const proyectosEl = document.querySelector('#proyectos');
+  if (proyectosEl) {
+    const title = proyectosEl.querySelector('h2');
+    const projectCards = proyectosEl.querySelectorAll('.project-card');
+
+    gsap.fromTo(
+      title,
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: '#proyectos',
+          start: 'top 85%'
+        }
+      }
+    );
+
+    gsap.fromTo(
+      projectCards,
+      { y: 50, opacity: 0, scale: 0.95 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: '#projectsGrid',
+          start: 'top 85%'
+        }
+      }
+    );
+  }
+
+  // 6. Animación de la Sección CONTACTO (#contacto)
+  const contactoEl = document.querySelector('#contacto');
+  if (contactoEl) {
+    const leftCol = contactoEl.querySelector('.lg\\:col-span-5');
+    const rightCol = contactoEl.querySelector('.lg\\:col-span-7');
+
+    if (leftCol) {
+      gsap.fromTo(
+        leftCol,
+        { x: -40, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#contacto',
+            start: 'top 80%'
+          }
+        }
+      );
+    }
+
+    if (rightCol) {
+      gsap.fromTo(
+        rightCol,
+        { x: 40, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: 0.15,
+          clearProps: 'transform,opacity',
+          scrollTrigger: {
+            trigger: '#contacto',
+            start: 'top 80%'
+          }
+        }
+      );
+    }
+  }
 }
 
 // Toast Notification Helper
