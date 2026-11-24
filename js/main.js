@@ -26,8 +26,37 @@ inicializarUI();
 inicializarGSAP();
 
 function inicializarUI() {
-  // Garantizar modo oscuro permanente en HTML
-  document.documentElement.classList.add('dark');
+  // Tema claro por defecto, con modo oscuro persistente
+  const root = document.documentElement;
+  const THEME_KEY = 'theme';
+
+  const aplicarTema = (modo) => {
+    const esOscuro = modo === 'dark';
+    root.classList.toggle('dark', esOscuro);
+    root.style.colorScheme = esOscuro ? 'dark' : 'light';
+    try {
+      localStorage.setItem(THEME_KEY, modo);
+    } catch (e) {
+      /* localStorage no disponible */
+    }
+  };
+
+  const modoGuardado = (() => {
+    try {
+      return localStorage.getItem(THEME_KEY);
+    } catch (e) {
+      return null;
+    }
+  })();
+
+  aplicarTema(modoGuardado === 'dark' ? 'dark' : 'light');
+
+  const alternarTema = () => {
+    aplicarTema(root.classList.contains('dark') ? 'light' : 'dark');
+  };
+
+  document.getElementById('themeBtn')?.addEventListener('click', alternarTema);
+  document.getElementById('themeBtnMobile')?.addEventListener('click', alternarTema);
 
   // Actualizar año en footer
   const yearElement = document.getElementById('year');
@@ -57,170 +86,6 @@ function inicializarUI() {
         const icon = menuBtn.querySelector('i');
         if (icon) icon.className = 'fa-solid fa-bars';
       });
-    });
-  }
-
-  // Modal de "Ver más proyectos"
-  const openMoreProjectsBtn = document.getElementById('openMoreProjectsBtn');
-  const closeMoreProjectsBtn = document.getElementById('closeMoreProjectsBtn');
-  const moreProjectsModal = document.getElementById('moreProjectsModal');
-
-  if (openMoreProjectsBtn && moreProjectsModal) {
-    openMoreProjectsBtn.addEventListener('click', () => {
-      moreProjectsModal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-
-      // Animación GSAP al abrir el modal
-      if (typeof gsap !== 'undefined') {
-        gsap.fromTo(
-          moreProjectsModal.querySelector('> div'),
-          { y: 50, opacity: 0, scale: 0.92 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.4)' }
-        );
-        const modalCards = moreProjectsModal.querySelectorAll('.project-card');
-        gsap.fromTo(
-          modalCards,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.04, duration: 0.4, ease: 'power2.out', delay: 0.1 }
-        );
-      }
-    });
-  }
-
-  if (closeMoreProjectsBtn && moreProjectsModal) {
-    closeMoreProjectsBtn.addEventListener('click', () => {
-      if (typeof gsap !== 'undefined') {
-        gsap.to(moreProjectsModal.querySelector('> div'), {
-          y: 30,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.25,
-          ease: 'power2.in',
-          onComplete: () => {
-            moreProjectsModal.classList.add('hidden');
-            document.body.style.overflow = '';
-          }
-        });
-      } else {
-        moreProjectsModal.classList.add('hidden');
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  if (moreProjectsModal) {
-    moreProjectsModal.addEventListener('click', (e) => {
-      if (e.target === moreProjectsModal) {
-        if (typeof gsap !== 'undefined') {
-          gsap.to(moreProjectsModal.querySelector('> div'), {
-            y: 30,
-            opacity: 0,
-            scale: 0.95,
-            duration: 0.25,
-            ease: 'power2.in',
-            onComplete: () => {
-              moreProjectsModal.classList.add('hidden');
-              document.body.style.overflow = '';
-            }
-          });
-        } else {
-          moreProjectsModal.classList.add('hidden');
-          document.body.style.overflow = '';
-        }
-      }
-    });
-  }
-
-  // INTERACTIVIDAD: Filtros en la vista principal (#mainCategoryFilters)
-  const mainFilters = document.querySelectorAll('#mainCategoryFilters .cat-filter-btn');
-  const mainCards = document.querySelectorAll('#projectsGrid .project-card');
-
-  mainFilters.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mainFilters.forEach(b => {
-        b.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30', 'active');
-        b.classList.add('bg-slate-800/80', 'text-slate-300', 'hover:bg-slate-700', 'border', 'border-slate-700');
-      });
-      btn.classList.remove('bg-slate-800/80', 'text-slate-300', 'hover:bg-slate-700', 'border', 'border-slate-700');
-      btn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30', 'active');
-
-      const selectedCat = btn.getAttribute('data-cat');
-
-      mainCards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        let isMatch = false;
-
-        if (selectedCat === 'all') isMatch = true;
-        else if (selectedCat === 'backend-laravel') isMatch = text.includes('backend laravel') || text.includes('proyecto 1') || text.includes('proyecto 2') || text.includes('proyecto 3') || text.includes('proyecto 4') || text.includes('proyecto 5');
-        else if (selectedCat === 'frontend-vuejs') isMatch = text.includes('frontend vuejs') || text.includes('proyecto 6') || text.includes('proyecto 7') || text.includes('proyecto 8') || text.includes('proyecto 9') || text.includes('proyecto 10');
-        else if (selectedCat === 'laravel-vue-inertia') isMatch = text.includes('laravel + vue + inertia') || text.includes('proyecto 11') || text.includes('proyecto 12') || text.includes('proyecto 13') || text.includes('proyecto 14') || text.includes('proyecto 15');
-        else if (selectedCat === 'otros-proyectos') isMatch = text.includes('otros proyectos') || text.includes('proyecto 16') || text.includes('proyecto 17') || text.includes('proyecto 18') || text.includes('proyecto 19');
-        else if (selectedCat === 'proyecto-grande') isMatch = text.includes('proyecto 20') || text.includes('proyecto grande') || text.includes('business intelligence');
-
-        if (isMatch) card.style.display = '';
-        else card.style.display = 'none';
-      });
-
-      if (typeof gsap !== 'undefined') {
-        const visibleCards = Array.from(mainCards).filter(c => c.style.display !== 'none');
-        gsap.fromTo(visibleCards, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, stagger: 0.05, ease: 'power2.out' });
-      }
-    });
-  });
-
-  // INTERACTIVIDAD: Filtros y Búsqueda en el Modal (#modalCategoryFilters y #modalSearchInput)
-  const modalFilterBtns = document.querySelectorAll('#modalCategoryFilters .modal-cat-btn');
-  const modalCards = document.querySelectorAll('#modalProjectsGrid .project-card');
-  const modalSearchInput = document.getElementById('modalSearchInput');
-
-  let currentModalCategory = 'all';
-  let currentSearchQuery = '';
-
-  function filterModalProjects() {
-    modalCards.forEach(card => {
-      const cardText = card.textContent.toLowerCase();
-      const matchesSearch = !currentSearchQuery || cardText.includes(currentSearchQuery);
-
-      let matchesCategory = true;
-      if (currentModalCategory !== 'all') {
-        if (currentModalCategory === 'backend-laravel') matchesCategory = cardText.includes('backend laravel') || cardText.includes('proyecto 1') || cardText.includes('proyecto 2') || cardText.includes('proyecto 3') || cardText.includes('proyecto 4') || cardText.includes('proyecto 5');
-        else if (currentModalCategory === 'frontend-vuejs') matchesCategory = cardText.includes('frontend vuejs') || cardText.includes('proyecto 6') || cardText.includes('proyecto 7') || cardText.includes('proyecto 8') || cardText.includes('proyecto 9') || cardText.includes('proyecto 10');
-        else if (currentModalCategory === 'laravel-vue-inertia') matchesCategory = cardText.includes('laravel + vue + inertia') || cardText.includes('proyecto 11') || cardText.includes('proyecto 12') || cardText.includes('proyecto 13') || cardText.includes('proyecto 14') || cardText.includes('proyecto 15');
-        else if (currentModalCategory === 'otros-proyectos') matchesCategory = cardText.includes('otros proyectos') || cardText.includes('proyecto 16') || cardText.includes('proyecto 17') || cardText.includes('proyecto 18') || cardText.includes('proyecto 19');
-        else if (currentModalCategory === 'proyecto-grande') matchesCategory = cardText.includes('proyecto 20') || cardText.includes('proyecto grande') || cardText.includes('business intelligence');
-      }
-
-      if (matchesSearch && matchesCategory) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
-  modalFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      modalFilterBtns.forEach(b => {
-        b.classList.remove('bg-indigo-600', 'text-white', 'active');
-        b.classList.add('bg-slate-800', 'text-slate-300', 'hover:bg-slate-700');
-      });
-      btn.classList.remove('bg-slate-800', 'text-slate-300', 'hover:bg-slate-700');
-      btn.classList.add('bg-indigo-600', 'text-white', 'active');
-
-      currentModalCategory = btn.getAttribute('data-mcat');
-      filterModalProjects();
-
-      if (typeof gsap !== 'undefined') {
-        const visibleModalCards = Array.from(modalCards).filter(c => c.style.display !== 'none');
-        gsap.fromTo(visibleModalCards, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, stagger: 0.04, ease: 'power2.out' });
-      }
-    });
-  });
-
-  if (modalSearchInput) {
-    modalSearchInput.addEventListener('input', (e) => {
-      currentSearchQuery = e.target.value.toLowerCase().trim();
-      filterModalProjects();
     });
   }
 
