@@ -1,120 +1,54 @@
 export function Projects() {
+  /*
+   * ============================================================
+   * CÓMO AÑADIR UN PROYECTO
+   * ============================================================
+   *
+   * 1. Copia el objeto de ejemplo que está comentado dentro del
+   *    array "projects" y quita los comentarios (//).
+   * 2. Cambia los valores por los de tu proyecto.
+   * 3. Guarda el archivo: la tarjeta se mostrará automáticamente.
+   *
+   * Campos disponibles:
+   * - id:          Número único del proyecto (1, 2, 3...).
+   * - title:       Nombre del proyecto.
+   * - category:    Categoría visible (ej. "Fullstack", "Backend", "IA").
+   * - categoryIcon: Clases del icono de FontAwesome y su color.
+   * - status:      Estado visible (ej. "En desarrollo", "Completado").
+   * - description: Descripción breve del proyecto.
+   * - features:    Lista de funcionalidades principales (array de textos).
+   * - techs:       Tecnologías usadas (array de textos). Deben coincidir
+   *                con las claves de "techBadgeConfig" para tener color
+   *                e icono; si no coinciden, se usa un badge genérico.
+   * - featured:    true = tarjeta grande de ancho completo (destacado).
+   *                false u omitido = tarjeta normal.
+   *
+   * Para agregar un nuevo icono/tecnología con su color, añade una
+   * entrada en "techBadgeConfig" siguiendo el mismo formato.
+   * ============================================================
+   */
   const projects = [
-    {
-      id: 1,
-      title: 'ERP Empresarial con Inteligencia Artificial',
-      category: 'Fullstack · Proyecto Principal',
-      categoryIcon: 'fa-solid fa-crown text-amber-500 dark:text-amber-400',
-      status: 'En desarrollo',
-      description:
-        'Sistema de planificación de recursos empresariales que unifica inventario multi-bodega, facturación, compras, contabilidad y un dashboard analítico con predicciones asistidas por IA.',
-      features: [
-        'Inventario multi-bodega y control de stock',
-        'Facturación, compras y contabilidad integradas',
-        'Dashboard con KPIs y predicciones por IA',
-        'Roles y permisos granulares por usuario'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'PostgreSQL', 'Redis', 'Docker', 'IA'],
-      featured: true
-    },
-    {
-      id: 2,
-      title: 'SaaS Multiempresa de Gestión de Proyectos',
-      category: 'SaaS · Fullstack',
-      categoryIcon: 'fa-solid fa-layer-group text-indigo-500 dark:text-indigo-400',
-      status: 'En desarrollo',
-      description:
-        'Plataforma multitenant para equipos de trabajo con tableros Kanban, seguimiento de tareas, cronogramas y suscripciones, aislando los datos de cada empresa.',
-      features: [
-        'Arquitectura multitenant con aislamiento de datos',
-        'Tableros Kanban y seguimiento de tareas',
-        'Suscripciones y planes por empresa',
-        'Notificaciones y actividad en tiempo real'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'PostgreSQL', 'Redis', 'Stripe', 'Docker']
-    },
-    {
-      id: 3,
-      title: 'E-commerce Fullstack con Pagos en Línea',
-      category: 'E-commerce · Fullstack',
-      categoryIcon: 'fa-solid fa-cart-shopping text-emerald-500 dark:text-emerald-400',
-      status: 'En desarrollo',
-      description:
-        'Tienda en línea completa con catálogo de productos, carrito persistente, cupones, checkout y panel administrativo para pedidos, clientes e inventario.',
-      features: [
-        'Catálogo con filtros y búsqueda avanzada',
-        'Carrito persistente y proceso de checkout',
-        'Integración con pasarela de pagos',
-        'Panel de pedidos, clientes e inventario'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'MySQL', 'Stripe', 'Tailwind', 'Git']
-    },
-    {
-      id: 4,
-      title: 'Plataforma de Cursos Online',
-      category: 'E-learning · Fullstack',
-      categoryIcon: 'fa-solid fa-graduation-cap text-purple-500 dark:text-purple-400',
-      status: 'En desarrollo',
-      description:
-        'Sistema de educación virtual con módulos y lecciones en video, seguimiento de progreso, evaluaciones, certificados y gestión de instructores.',
-      features: [
-        'Cursos con módulos y lecciones en video',
-        'Seguimiento de progreso por estudiante',
-        'Evaluaciones y generación de certificados',
-        'Panel para instructores y administradores'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'PostgreSQL', 'Tailwind', 'AWS', 'Testing']
-    },
-    {
-      id: 5,
-      title: 'Sistema de Gestión Clínica',
-      category: 'Salud · Fullstack',
-      categoryIcon: 'fa-solid fa-stethoscope text-sky-500 dark:text-sky-400',
-      status: 'En desarrollo',
-      description:
-        'Plataforma para clínicas y consultorios con historia clínica electrónica, agenda de citas, recetas, tratamientos y facturación de servicios médicos.',
-      features: [
-        'Historia clínica electrónica de pacientes',
-        'Agenda de citas y recordatorios',
-        'Recetas y seguimiento de tratamientos',
-        'Facturación de consultas y servicios'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'PostgreSQL', 'Tailwind', 'Docker']
-    },
-    {
-      id: 6,
-      title: 'Dashboard Analítico con API de IA',
-      category: 'Data · Backend + IA',
-      categoryIcon: 'fa-solid fa-chart-line text-cyan-500 dark:text-cyan-400',
-      status: 'En desarrollo',
-      description:
-        'API REST y panel analítico que consume datos de negocio para generar reportes, exportaciones y recomendaciones automáticas mediante modelos de IA.',
-      features: [
-        'API REST documentada y autenticada',
-        'Reportes y exportaciones en PDF y Excel',
-        'Gráficos interactivos de KPIs',
-        'Recomendaciones automáticas con IA'
-      ],
-      techs: ['Laravel', 'REST API', 'Sanctum', 'PostgreSQL', 'Vue 3', 'IA', 'Testing']
-    },
-    {
-      id: 7,
-      title: 'Sistema de Delivery en Tiempo Real',
-      category: 'Tiempo real · Fullstack',
-      categoryIcon: 'fa-solid fa-motorcycle text-orange-500 dark:text-orange-400',
-      status: 'En desarrollo',
-      description:
-        'Aplicación de pedidos y reparto con seguimiento de repartidores en vivo, notificaciones push, asignación de rutas y actualización de estados sin recargar la página.',
-      features: [
-        'Seguimiento de pedidos en tiempo real',
-        'Notificaciones push y alertas de estado',
-        'Asignación y control de repartidores',
-        'Panel de pedidos y reportes de entrega'
-      ],
-      techs: ['Laravel', 'Vue 3', 'Inertia', 'MySQL', 'Redis', 'WebSockets', 'Docker']
-    }
+    // {
+    //   id: 1,
+    //   title: 'Nombre de tu proyecto',
+    //   category: 'Fullstack',
+    //   categoryIcon: 'fa-solid fa-layer-group text-indigo-500 dark:text-indigo-400',
+    //   status: 'En desarrollo',
+    //   description: 'Descripción breve de qué hace el proyecto y qué problema resuelve.',
+    //   features: [
+    //     'Primera funcionalidad principal',
+    //     'Segunda funcionalidad principal',
+    //     'Tercera funcionalidad principal'
+    //   ],
+    //   techs: ['Laravel', 'Vue 3', 'Inertia', 'PostgreSQL'],
+    //   featured: false
+    // }
   ];
 
+  /*
+   * Iconos y colores para los badges de tecnologías.
+   * Puedes agregar más tecnologías aquí.
+   */
   const techBadgeConfig = {
     Laravel: { icon: 'fa-brands fa-laravel', style: 'bg-red-500/10 text-red-600 border-red-500/30 hover:bg-red-500/20 dark:text-red-400' },
     'Vue 3': { icon: 'fa-brands fa-vuejs', style: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30 hover:bg-emerald-500/20 dark:text-emerald-400' },
@@ -264,6 +198,40 @@ export function Projects() {
     `;
   };
 
+  /*
+   * Estado visual cuando todavía no hay proyectos.
+   * Se muestra automáticamente mientras el array "projects" esté vacío.
+   */
+  const renderEmptyState = () => `
+    <div class="project-card glass-card col-span-full rounded-3xl border border-dashed border-slate-300 p-10 sm:p-14 text-center dark:border-slate-700">
+      <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600 text-2xl dark:bg-indigo-950/60 dark:text-indigo-400">
+        <i class="fa-solid fa-diagram-project"></i>
+      </div>
+
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-[11px] font-black uppercase tracking-widest border border-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:border-amber-500/30">
+        <span class="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+        En desarrollo
+      </span>
+
+      <h3 class="mt-4 text-xl sm:text-2xl font-black font-heading text-slate-900 dark:text-white">
+        Proyectos en preparación
+      </h3>
+      <p class="mx-auto mt-2 max-w-xl text-sm text-slate-600 dark:text-slate-400">
+        Estoy construyendo y documentando nuevos proyectos fullstack. Muy pronto estarán disponibles aquí y en mi GitHub.
+      </p>
+
+      <a
+        href="https://github.com/JhoeJhl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all hover:scale-105 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
+      >
+        <i class="fa-brands fa-github text-base"></i>
+        <span>Visitar mi GitHub</span>
+      </a>
+    </div>
+  `;
+
   return `
     <section
       id="proyectos"
@@ -281,28 +249,12 @@ export function Projects() {
             Proyectos <span class="gradient-text">Destacados</span>
           </h2>
           <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300">
-            Una selección de proyectos fullstack pensados para resolver problemas reales con Laravel, Vue.js, Inertia, PostgreSQL e Inteligencia Artificial.
+            Pronto estaré publicando aquí los proyectos fullstack en los que estoy trabajando con Laravel, Vue.js, Inertia, PostgreSQL e Inteligencia Artificial.
           </p>
         </div>
 
         <div id="projectsGrid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          ${projects.map(renderProjectCard).join('')}
-        </div>
-
-        <div class="mt-14 text-center space-y-3">
-          <a
-            href="https://github.com/JhoeJhl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3 group"
-          >
-            <i class="fa-brands fa-github text-base"></i>
-            <span>Ver todos los repositorios en GitHub</span>
-            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-          </a>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Cada proyecto se publicará en GitHub a medida que avance su desarrollo.
-          </p>
+          ${projects.length ? projects.map(renderProjectCard).join('') : renderEmptyState()}
         </div>
       </div>
     </section>
